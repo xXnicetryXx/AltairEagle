@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AltairEagle</title>
+<link rel="icon" type="image/png" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/auth.css">
@@ -12,7 +13,6 @@
 </head>
 <body>
 
-<!-- ═══ AUTH ═══ -->
 <div id="authScreen">
   <div class="auth-card">
     <div class="auth-logo">
@@ -58,7 +58,6 @@
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
 <div id="appScreen" class="hidden">
 
   <aside id="sidebar">
@@ -73,7 +72,6 @@
     <div class="sidebar-section-label">CHAT ROOMS</div>
     <div id="roomList" class="room-list"><div class="room-loading">loading…</div></div>
 
-    <!-- Games Ad Panel -->
     <div class="games-panel">
       <div class="games-panel-header">
         <div class="games-panel-title">🎮 Play &amp; Learn</div>
@@ -96,7 +94,6 @@
 
   <main id="mainArea">
 
-    <!-- Welcome -->
     <div id="welcomePane" class="welcome-pane">
       <div class="welcome-eagle">🦅</div>
       <h2>Welcome to AltairEagle</h2>
@@ -104,7 +101,6 @@
       <button class="primary-btn" onclick="UI.openCreateRoom()">＋ Create a Room</button>
     </div>
 
-    <!-- Game viewer -->
     <div id="gamePane" class="hidden">
       <div class="game-topbar">
         <button class="icon-btn" id="closeGameBtn">← Back to Chat</button>
@@ -114,7 +110,6 @@
       <div id="gameContainer"></div>
     </div>
 
-    <!-- Chat -->
     <div id="chatPane" class="hidden">
       <div class="chat-header">
         <button class="icon-btn mobile-back" id="backBtn">←</button>
@@ -145,7 +140,6 @@
   </main>
 </div>
 
-<!-- MODALS -->
 <div class="modal-overlay hidden" id="createRoomModal">
   <div class="modal">
     <div class="modal-header"><h3>Create a New Room</h3><button class="modal-close" onclick="UI.closeModal('createRoomModal')">✕</button></div>
