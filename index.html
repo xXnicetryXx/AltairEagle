@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AltairEagle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/games.css">
+</head>
+<body>
+
+<!-- ═══ AUTH ═══ -->
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-mark">🦅</div>
+      <div>
+        <h1>AltairEagle</h1>
+        <p>Learn Together · Rise Together</p>
+      </div>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin"    onclick="Auth.switchTab('login')">Login</button>
+      <button class="auth-tab"        id="tabRegister" onclick="Auth.switchTab('register')">Register</button>
+    </div>
+    <div class="auth-form" id="loginForm">
+      <div class="field">
+        <label class="field-label">Username</label>
+        <input class="auth-input" id="loginUser" type="text" placeholder="your_username" autocomplete="username" maxlength="24"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Password</label>
+        <input class="auth-input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <div class="auth-msg err" id="loginErr"></div>
+      <button class="auth-btn" id="loginBtn">Sign In →</button>
+    </div>
+    <div class="auth-form hidden" id="registerForm">
+      <div class="field">
+        <label class="field-label">Username <span class="field-hint">letters, numbers, underscores</span></label>
+        <input class="auth-input" id="regUser" type="text" placeholder="eagle_learner" autocomplete="username" maxlength="24"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Password <span class="field-hint">min 4 characters</span></label>
+        <input class="auth-input" id="regPass" type="password" placeholder="••••••••" autocomplete="new-password"/>
+      </div>
+      <div class="field">
+        <label class="field-label">Confirm Password</label>
+        <input class="auth-input" id="regPass2" type="password" placeholder="••••••••" autocomplete="new-password"/>
+      </div>
+      <div class="auth-msg err" id="regErr"></div>
+      <div class="auth-msg ok"  id="regOk"></div>
+      <button class="auth-btn" id="regBtn">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="appScreen" class="hidden">
+
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="logo-eagle">🦅</span>
+        <span class="logo-name">AltairEagle</span>
+      </div>
+      <button class="icon-btn" id="newChatBtn" title="Create room">＋</button>
+    </div>
+
+    <div class="sidebar-section-label">CHAT ROOMS</div>
+    <div id="roomList" class="room-list"><div class="room-loading">loading…</div></div>
+
+    <!-- Games Ad Panel -->
+    <div class="games-panel">
+      <div class="games-panel-header">
+        <div class="games-panel-title">🎮 Play &amp; Learn</div>
+        <div class="games-panel-sub">Educational Mini-Games</div>
+      </div>
+      <div id="gamesGrid" class="games-grid"></div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar" id="sidebarAvatar">?</div>
+        <div class="user-info">
+          <span class="user-name" id="sidebarUsername">—</span>
+          <span class="user-status">● online</span>
+        </div>
+      </div>
+      <button class="icon-btn danger" id="logoutBtn" title="Log out">⏻</button>
+    </div>
+  </aside>
+
+  <main id="mainArea">
+
+    <!-- Welcome -->
+    <div id="welcomePane" class="welcome-pane">
+      <div class="welcome-eagle">🦅</div>
+      <h2>Welcome to AltairEagle</h2>
+      <p>Select a chat room on the left, or create a new one to get started.</p>
+      <button class="primary-btn" onclick="UI.openCreateRoom()">＋ Create a Room</button>
+    </div>
+
+    <!-- Game viewer -->
+    <div id="gamePane" class="hidden">
+      <div class="game-topbar">
+        <button class="icon-btn" id="closeGameBtn">← Back to Chat</button>
+        <span class="game-topbar-title" id="gamePaneTitle"></span>
+        <span class="game-topbar-score" id="gamePaneScore"></span>
+      </div>
+      <div id="gameContainer"></div>
+    </div>
+
+    <!-- Chat -->
+    <div id="chatPane" class="hidden">
+      <div class="chat-header">
+        <button class="icon-btn mobile-back" id="backBtn">←</button>
+        <div class="chat-header-info">
+          <span class="chat-room-name" id="chatRoomName">—</span>
+          <span class="chat-room-meta" id="chatRoomMeta"></span>
+        </div>
+        <div class="chat-header-actions">
+          <button class="icon-btn" id="roomInfoBtn" title="Room info">ℹ</button>
+          <button class="icon-btn danger" id="deleteRoomBtn" title="Delete room">🗑</button>
+        </div>
+      </div>
+      <div id="filePreviewStrip" class="file-strip"></div>
+      <div id="messages" class="messages-area"><div class="loading-msg">loading…</div></div>
+      <div class="drag-overlay" id="dragOverlay">📎 Drop files to share</div>
+      <div class="input-area">
+        <div class="msg-row">
+          <button class="attach-btn" id="attachBtn">📎</button>
+          <input type="file" id="fileInput" multiple accept="*/*"/>
+          <textarea id="msgInput" placeholder="Type a message… (Enter to send)" rows="1"></textarea>
+          <button class="send-btn" id="sendBtn">Send ↑</button>
+        </div>
+        <div class="upload-progress hidden" id="uploadProgress"><div class="upload-bar" id="uploadBar"></div></div>
+        <div class="input-footer">📎 Any file · 🖼 Preview · 🎬 Video plays · Drag &amp; drop or paste</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay hidden" id="createRoomModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Create a New Room</h3><button class="modal-close" onclick="UI.closeModal('createRoomModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label class="field-label">Room Name</label><input class="auth-input" id="newRoomName" type="text" placeholder="e.g. Math Help, Science Q&A" maxlength="40"/></div>
+      <div class="field"><label class="field-label">Description <span class="field-hint">optional</span></label><input class="auth-input" id="newRoomDesc" type="text" placeholder="What's this room about?" maxlength="100"/></div>
+      <div class="field"><label class="field-label">Password <span class="field-hint">leave blank for public</span></label><input class="auth-input" id="newRoomPass" type="password" placeholder="Lock this room"/></div>
+      <div class="modal-row"><label class="field-label">Type</label><div class="radio-group"><label class="radio-opt"><input type="radio" name="roomType" value="public" checked> 🌐 Public</label><label class="radio-opt"><input type="radio" name="roomType" value="private"> 🔒 Private</label></div></div>
+      <div class="auth-msg err" id="createRoomErr"></div>
+    </div>
+    <div class="modal-footer"><button class="secondary-btn" onclick="UI.closeModal('createRoomModal')">Cancel</button><button class="primary-btn" id="createRoomBtn">Create Room</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="roomPassModal">
+  <div class="modal">
+    <div class="modal-header"><h3>🔒 Password Required</h3><button class="modal-close" onclick="UI.closeModal('roomPassModal')">✕</button></div>
+    <div class="modal-body">
+      <p class="modal-desc">This room is password protected.</p>
+      <div class="field" style="margin-top:14px"><label class="field-label">Password</label><input class="auth-input" id="roomPassInput" type="password" placeholder="••••••••"/></div>
+      <div class="auth-msg err" id="roomPassErr"></div>
+    </div>
+    <div class="modal-footer"><button class="secondary-btn" onclick="UI.closeModal('roomPassModal')">Cancel</button><button class="primary-btn" id="roomPassBtn">Join Room</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="roomInfoModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Room Info</h3><button class="modal-close" onclick="UI.closeModal('roomInfoModal')">✕</button></div>
+    <div class="modal-body" id="roomInfoBody"></div>
+    <div class="modal-footer"><button class="primary-btn" onclick="UI.closeModal('roomInfoModal')">Close</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="deleteRoomModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Delete Room?</h3><button class="modal-close" onclick="UI.closeModal('deleteRoomModal')">✕</button></div>
+    <div class="modal-body">
+      <p class="modal-desc">Delete <strong id="deleteRoomNameLabel"></strong>? All messages will be permanently lost.</p>
+      <div class="auth-msg err" id="deleteRoomErr"></div>
+    </div>
+    <div class="modal-footer"><button class="secondary-btn" onclick="UI.closeModal('deleteRoomModal')">Cancel</button><button class="danger-btn" id="confirmDeleteBtn">Delete Forever</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="changePassModal">
+  <div class="modal">
+    <div class="modal-header"><h3>Change Room Password</h3><button class="modal-close" onclick="UI.closeModal('changePassModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="field"><label class="field-label">New Password <span class="field-hint">blank = remove password</span></label><input class="auth-input" id="changePassInput" type="password" placeholder="New password…"/></div>
+      <div class="auth-msg err" id="changePassErr"></div>
+      <div class="auth-msg ok"  id="changePassOk"></div>
+    </div>
+    <div class="modal-footer"><button class="secondary-btn" onclick="UI.closeModal('changePassModal')">Cancel</button><button class="primary-btn" id="changePassBtn">Save</button></div>
+  </div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/rooms.js"></script>
+<script src="js/files.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/games.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
